@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body { font-family: -apple-system, system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 0; background: #f6f7fb; color: #222; }
+.container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+.navbar { display: flex; align-items: center; gap: 12px; background: white; padding: 10px 16px; border-bottom: 1px solid #eee; }
+.navbar .brand { font-weight: 700; color: #222; text-decoration: none; }
+.navbar .spacer { flex: 1; }
+.card { background: white; border: 1px solid #eee; border-radius: 8px; padding: 12px; margin: 8px 0; }
+.row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+input, select, button { padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; }
+button { background: #222; color: white; cursor: pointer; }
+button.link, a.link { background: transparent; color: #0066cc; border: none; cursor: pointer; text-decoration: underline; }
+.error { color: #c00; margin-top: 4px; }
+.kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.column { background: #fdfdfd; border: 1px dashed #e5e5e5; border-radius: 8px; padding: 10px; }
+.task .pill { padding: 2px 8px; border-radius: 999px; background: #eee; font-size: 12px; }
+.pill.high { background: #ffebee; color: #c62828; }
+.pill.medium { background: #fff8e1; color: #ef6c00; }
+.pill.low { background: #e8f5e9; color: #2e7d32; }
+.chat { background: white; border: 1px solid #eee; border-radius: 8px; padding: 12px; height: 360px; overflow: auto; margin: 8px 0; }
+.message { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
+.muted { color: #666; font-size: 14px; }
+.toast { background: #222; color: #fff; padding: 10px 12px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+.toast.success { background: #2e7d32; }
+.toast.error { background: #c62828; }
+.toast.info { background: #1565c0; }
+
+/* Dark mode (black/white) */
+.dark body { background: #0a0a0a; color: #f5f5f5; }
+.dark .navbar { background: #111; border-bottom-color: #222; }
+.dark .navbar .brand { color: #fafafa; }
+.dark .card { background: #0f0f0f; border-color: #222; }
+.dark input, .dark select { background: #0f0f0f; color: #fafafa; border-color: #333; }
+.dark button { background: #fafafa; color: #111; }
+.dark .column { background: #111; border-color: #222; }
+.dark .chat { background: #0f0f0f; border-color: #222; }
+.dark .message { border-bottom-color: #1a1a1a; }
+.dark .muted { color: #a1a1a1; }

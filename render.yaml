@@ -1,0 +1,54 @@
+services:
+  - type: web
+    name: taskflow-server
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: |
+      npm install
+      npx prisma migrate deploy
+      npm run prisma:generate
+    startCommand: npm run start
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        # Set this to the client service URL after first deploy, e.g. https://taskflow-client.onrender.com
+        value: https://taskflow-client.onrender.com
+      - key: DATABASE_URL
+        # Example: mysql://USER:PASSWORD@HOST:PORT/DB
+        value: ""
+      - key: JWT_SECRET
+        value: ""
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_SECURE
+        value: "false"
+      - key: SMTP_USER
+        value: ""
+      - key: SMTP_PASS
+        value: ""
+      - key: FROM_EMAIL
+        value: "TaskFlow <no-reply@taskflow.app>"
+
+  - type: web
+    name: taskflow-client
+    env: node
+    plan: free
+    rootDir: client
+    buildCommand: |
+      npm install
+      npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    envVars:
+      - key: NEXT_PUBLIC_API_URL
+        # Set this to the server service URL after first deploy, e.g. https://taskflow-server.onrender.com
+        value: https://taskflow-server.onrender.com
