@@ -22,7 +22,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000'].filter(Boolean);
+const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000', 'https://taskflow-client.onrender.com'].filter(Boolean);
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
@@ -46,7 +46,7 @@ app.use('/api/users', usersRoutes);
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: [process.env.CLIENT_URL, 'http://localhost:3000'].filter(Boolean),
+    origin: [process.env.CLIENT_URL, 'http://localhost:3000', 'https://taskflow-client.onrender.com'].filter(Boolean),
     methods: ['GET', 'POST'],
   },
 });
