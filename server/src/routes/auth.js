@@ -13,7 +13,7 @@ router.post('/signup', async (req, res) => {
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) return res.status(400).json({ message: 'Email already used' });
     const hash = await bcrypt.hash(password, 10);
-    const userRole = role && ['admin', 'manager', 'member'].includes(role) ? role : 'member';
+    const userRole = 'admin';
     const created = await prisma.user.create({ data: { name, email, password_hash: hash, role: userRole } });
     const user = { id: created.id, name: created.name, email: created.email, role: created.role };
     const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN || '7d' });
