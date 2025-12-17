@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import '../styles.css';
 import { ToastProvider } from '../src/components/Toast';
 import SocketBridge from '../src/components/SocketBridge';
+import Layout from '../src/components/Layout';
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
@@ -10,7 +11,9 @@ export default function App({ Component, pageProps }) {
   return (
     <ToastProvider>
       <SocketBridge />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </ToastProvider>
   );
 }

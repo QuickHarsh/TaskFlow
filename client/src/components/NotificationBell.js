@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
+import { Bell, Check } from 'lucide-react';
 
 export default function NotificationBell() {
   const [unread, setUnread] = useState(0);
@@ -12,7 +13,7 @@ export default function NotificationBell() {
       const list = await api.get('/notifications');
       setItems(list);
       setUnread(list.filter(n => !n.read_at).length);
-    } catch {}
+    } catch { }
   }
 
   useEffect(() => {
@@ -31,33 +32,37 @@ export default function NotificationBell() {
 
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-ghost btn-circle" onClick={() => setOpen(v=>!v)}>
+      <label tabIndex={0} className="btn btn-ghost btn-circle btn-sm" onClick={() => setOpen(v => !v)}>
         <div className="indicator">
-          <span>🔔</span>
-          {unread > 0 && <span className="badge badge-sm indicator-item">{unread}</span>}
+          <Bell size={20} className="text-slate-500 dark:text-slate-400" />
+          {unread > 0 && <span className="badge badge-xs badge-primary indicator-item"></span>}
         </div>
       </label>
       {open && (
-        <div tabIndex={0} className="dropdown-content z-[100] card card-compact w-80 bg-base-100 shadow">
-          <div className="card-body">
-            <div className="flex items-center justify-between">
-              <h3 className="card-title text-base">Notifications</h3>
-              <button className="btn btn-ghost btn-xs" onClick={markAllRead}>Mark all read</button>
-            </div>
-            <div className="divide-y max-h-60 overflow-auto">
-              {items.map(n => (
-                <div key={n.id} className="py-2 text-sm flex items-start justify-between gap-2">
-                  <div>
-                    <div className="text-xs opacity-70">
-                      {n.type === 'task_assigned' ? 'Task assigned' : n.type === 'task_updated' ? 'Task updated' : 'Notification'}
-                    </div>
-                    <div>{n.payload?.title || ''}{n.payload?.status ? ` → ${n.payload.status}` : ''}</div>
-                  </div>
-                  {!n.read_at && <span className="badge badge-warning">new</span>}
+        <div tabIndex={0} className="dropdown-content z-[100] menu p-2 shadow bg-base-100 rounded-box w-80 border border-base-200">
+          <div className="flex items-center justify-between px-4 py-2 border-b border-base-200">
+            <h3 className="font-semibold text-sm">Notifications</h3>
+            {unread > 0 && (
+              <button onClick={markAllRead} className="text-xs text-indigo-500 hover:text-indigo-600 font-medium flex items-center gap-1">
+                <Check size={12} /> Mark all read
+              </button>
+            )}
+          </div>
+          <div className="max-h-64 overflow-y-auto">
+            {items.length === 0 ? (
+              <div className="py-8 text-center text-sm text-slate-500">
+                No notifications
+              </div>
+            ) : (
+              items.map(n => (
+                <div key={n.id} className={`px-4 py-3 border-b border-base-100 last:border-0 hover:bg-base-200/50 transition-colors ${!n.read_at ? 'bg-indigo-50/50 dark:bg-indigo-900/10' : ''}`}>
+                  <p className="text-sm text-slate-800 dark:text-slate-200">{n.payload?.title || 'Notification'}</p>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    {n.type === 'task_assigned' ? 'New assignment' : 'Update'}
+                  </p>
                 </div>
-              ))}
-              {!items.length && <div className="py-4 text-center text-sm opacity-70">No notifications</div>}
-            </div>
+              ))
+            )}
           </div>
         </div>
       )}

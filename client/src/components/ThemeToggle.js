@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
 
 export default function ThemeToggle() {
   const [mode, setMode] = useState('light');
@@ -7,10 +8,9 @@ export default function ThemeToggle() {
     try {
       const saved = localStorage.getItem('theme') || 'light';
       setMode(saved);
-      // DaisyUI theme attribute + dark class fallback
       document.documentElement.setAttribute('data-theme', saved === 'dark' ? 'black' : 'light');
       document.documentElement.classList.toggle('dark', saved === 'dark');
-    } catch {}
+    } catch { }
   }, []);
 
   function toggle() {
@@ -18,14 +18,14 @@ export default function ThemeToggle() {
     setMode(next);
     try {
       localStorage.setItem('theme', next);
-    } catch {}
+    } catch { }
     document.documentElement.setAttribute('data-theme', next === 'dark' ? 'black' : 'light');
     document.documentElement.classList.toggle('dark', next === 'dark');
   }
 
   return (
-    <button onClick={toggle} title="Toggle theme" className="btn btn-sm">
-      {mode === 'dark' ? 'Light' : 'Dark'}
+    <button onClick={toggle} title="Toggle theme" className="btn btn-ghost btn-circle btn-sm text-slate-500 dark:text-slate-400">
+      {mode === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
     </button>
   );
 }
