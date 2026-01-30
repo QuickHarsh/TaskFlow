@@ -11,7 +11,12 @@ dotenv.config();
 const server = http.createServer(app);
 const io = new SocketIOServer(server, {
   cors: {
-    origin: [process.env.CLIENT_URL, 'http://localhost:3000', 'https://taskflow-client.onrender.com'].filter(Boolean),
+    origin: [
+      process.env.CLIENT_URL,
+      'http://localhost:3000',
+      'https://taskflow-client.onrender.com',
+      'https://task-flow-khyn.vercel.app'
+    ].filter(Boolean),
     methods: ['GET', 'POST'],
   },
 });

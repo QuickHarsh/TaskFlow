@@ -10,7 +10,12 @@ import usersRoutes from './routes/users.js';
 
 const app = express();
 
-const allowedOrigins = [process.env.CLIENT_URL, 'http://localhost:3000', 'https://taskflow-client.onrender.com'].filter(Boolean);
+const allowedOrigins = [
+    process.env.CLIENT_URL,
+    'http://localhost:3000',
+    'https://taskflow-client.onrender.com',
+    'https://task-flow-khyn.vercel.app'
+].filter(Boolean);
 
 app.use(cors({
     origin: function (origin, callback) {
