@@ -7,19 +7,24 @@
   width: 8px;
   height: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
 .dark ::-webkit-scrollbar-thumb {
   background: #475569;
 }
+
 .dark ::-webkit-scrollbar-thumb:hover {
   background: #64748b;
 }
@@ -28,4 +33,18 @@
 body {
   font-family: 'Inter', -apple-system, system-ui, sans-serif;
   @apply bg-slate-50 text-slate-900 dark:bg-base-300 dark:text-slate-100;
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+
+  .glass-dark {
+    @apply bg-slate-900/70 backdrop-blur-lg border border-slate-700/50 shadow-xl;
+  }
+
+  .sidebar-gradient {
+    @apply bg-gradient-to-b from-slate-900 to-slate-800;
+  }
 }

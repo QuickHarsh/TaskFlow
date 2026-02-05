@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 // Socket.io doesn't work on Vercel Serverless. 
 // We disable autoConnect to prevent connection error spam in production.

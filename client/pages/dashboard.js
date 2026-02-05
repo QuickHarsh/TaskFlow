@@ -66,19 +66,24 @@ function Dashboard() {
 
   return (
     <div>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
         <div>
-          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Dashboard</h2>
-          <p className="text-slate-500 dark:text-slate-400">Welcome back, here's what's happening today.</p>
+          <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white mb-2 leading-tight">
+            Dashboard
+          </h2>
+          <p className="text-slate-500 dark:text-slate-400 text-lg">
+            Welcome back! Here's your efficiency overview.
+          </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4 bg-white dark:bg-base-200 p-2 rounded-2xl shadow-sm border border-slate-200 dark:border-base-300">
           {loadingProjects ? (
-            <div className="text-sm text-slate-500">Loading projects...</div>
+            <div className="px-4 py-2 text-sm text-slate-500 animate-pulse">Loading projects...</div>
           ) : (
             <>
               <select
-                className="select select-bordered select-sm w-full sm:w-auto"
+                className="select select-ghost select-sm w-full sm:w-auto font-medium focus:outline-none focus:bg-transparent"
                 value={selectedProject?.id || ''}
                 onChange={(e) => {
                   const p = projects.find(x => x.id === Number(e.target.value));
@@ -90,7 +95,7 @@ function Dashboard() {
                 ))}
               </select>
               {selectedProject && (
-                <a className="btn btn-primary btn-sm" href={`/project/${selectedProject.id}`}>
+                <a className="btn btn-sm bg-brand-500 hover:bg-brand-600 text-white border-none rounded-xl px-6 shadow-lg shadow-brand-500/30" href={`/project/${selectedProject.id}`}>
                   Project Chat
                 </a>
               )}
@@ -99,22 +104,60 @@ function Dashboard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-10">
         {/* Productivity Chart */}
-        <div className="card bg-base-100 shadow-xl border border-base-200 xl:col-span-3">
-          <div className="card-body">
-            <h3 className="card-title text-base font-semibold text-slate-700 dark:text-slate-200 mb-4">Task Activity</h3>
-            <div className="h-[300px] w-full">
+        <div className="glass shadow-xl rounded-3xl xl:col-span-3 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+
+          <div className="p-8 relative z-10">
+            <h3 className="text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2">
+              <span className="w-2 h-8 bg-brand-500 rounded-full" />
+              Task Activity
+            </h3>
+            <div className="h-[350px] w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={chartData}>
+                  <defs>
+                    <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8b5cf6" stopOpacity={0.1} />
+                      <stop offset="95%" stopColor="#8b5cf6" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                  <XAxis dataKey="date" stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} />
-                  <YAxis stroke="#94a3b8" fontSize={12} tickLine={false} axisLine={false} allowDecimals={false} />
-                  <Tooltip
-                    contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    cursor={{ stroke: '#6366f1', strokeWidth: 2 }}
+                  <XAxis
+                    dataKey="date"
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    tick={{ fill: '#64748b' }}
+                    dy={10}
                   />
-                  <Line type="monotone" dataKey="count" stroke="#6366f1" strokeWidth={3} dot={{ r: 4, fill: '#6366f1' }} activeDot={{ r: 6 }} />
+                  <YAxis
+                    stroke="#94a3b8"
+                    fontSize={12}
+                    tickLine={false}
+                    axisLine={false}
+                    allowDecimals={false}
+                    tick={{ fill: '#64748b' }}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      borderRadius: '16px',
+                      border: 'none',
+                      boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)',
+                      padding: '12px'
+                    }}
+                    cursor={{ stroke: '#8b5cf6', strokeWidth: 2 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="count"
+                    stroke="#8b5cf6"
+                    strokeWidth={4}
+                    dot={{ r: 4, fill: '#fff', stroke: '#8b5cf6', strokeWidth: 2 }}
+                    activeDot={{ r: 8, fill: '#8b5cf6', stroke: '#fff', strokeWidth: 2 }}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -123,18 +166,23 @@ function Dashboard() {
       </div>
 
 
-      <div className="card bg-base-100 shadow-xl border border-base-200">
-        <div className="card-body p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="card-title">Task Board</h3>
+      <div className="glass shadow-xl rounded-3xl border-none overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+        <div className="p-8 bg-white/50 dark:bg-base-200/50">
+          <div className="flex items-center justify-between mb-8">
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-3">
+              <span className="p-2 bg-brand-100 dark:bg-brand-900/30 rounded-lg">
+                <div className="w-2 h-2 bg-brand-500 rounded-full" />
+              </span>
+              Task Board
+            </h3>
             <button
-              className="btn btn-primary btn-sm gap-2"
+              className="btn btn-sm bg-slate-900 hover:bg-slate-800 text-white rounded-xl gap-2 shadow-lg"
               onClick={() => {
                 if (!selectedProject) return t.show('Please select a project first', 'error');
-                setActiveTask({}); // Empty object triggers 'Create' mode in modal logic if we verify
+                setActiveTask({});
               }}
             >
-              <Plus size={16} /> New Task
+              <Plus size={18} /> New Task
             </button>
           </div>
 
@@ -148,11 +196,7 @@ function Dashboard() {
               if (!selectedProject) return t.show('Please select a project first', 'error');
               setActiveTask({});
             }}
-            hideCreate={true} // We can hide the inline create if we want, or keep it. User asked for modal creation "ask description etc". 
-            // The user said "when i create a task... they asking description... make sure it ask on creating". 
-            // So we should probably disable/hide the simple inline create in Kanban or make it open the modal?
-            // The KanbanBoard component has a 'Create Task' column. Let's hide it or update it.
-            // For now, let's just make the "New Task" button work.
+            hideCreate={true}
             onSelect={(task) => setActiveTask(task)}
             canDelete={role === 'admin'}
             onDelete={async (id) => {

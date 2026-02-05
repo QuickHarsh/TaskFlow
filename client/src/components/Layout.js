@@ -42,7 +42,7 @@ export default function Layout({ children }) {
     ];
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-base-300 flex">
+        <div className="h-screen overflow-hidden bg-slate-50 dark:bg-base-300 flex">
             {/* Mobile Sidebar Overlay */}
             {sidebarOpen && (
                 <div
@@ -53,22 +53,22 @@ export default function Layout({ children }) {
 
             {/* Sidebar */}
             <aside className={`
-        fixed lg:static inset-y-0 left-0 z-50 w-64 bg-slate-900 text-white transform transition-transform duration-200 ease-in-out
+        fixed lg:static inset-y-0 left-0 z-50 w-72 sidebar-gradient text-white transform transition-transform duration-300 ease-in-out shadow-2xl
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-                <div className="h-full flex flex-col">
+                <div className="h-full flex flex-col backdrop-blur-sm bg-black/10">
                     {/* Logo */}
-                    <div className="h-16 flex items-center px-6 border-b border-slate-800">
-                        <div className="flex items-center gap-2 font-bold text-xl tracking-tight">
-                            <div className="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center">
-                                <CheckCircle2 size={20} className="text-white" />
+                    <div className="h-20 flex items-center px-8 border-b border-white/10">
+                        <div className="flex items-center gap-3 font-bold text-2xl tracking-tight">
+                            <div className="w-10 h-10 bg-brand-500 rounded-xl shadow-lg shadow-brand-500/30 flex items-center justify-center transform rotate-3">
+                                <CheckCircle2 size={24} className="text-white" />
                             </div>
-                            <span className="bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                            <span className="bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
                                 TaskFlow
                             </span>
                         </div>
                         <button
-                            className="ml-auto lg:hidden text-slate-400 hover:text-white"
+                            className="ml-auto lg:hidden text-slate-400 hover:text-white transition-colors"
                             onClick={() => setSidebarOpen(false)}
                         >
                             <X size={24} />
@@ -76,7 +76,7 @@ export default function Layout({ children }) {
                     </div>
 
                     {/* Nav Links */}
-                    <nav className="flex-1 px-4 py-6 space-y-1">
+                    <nav className="flex-1 px-4 py-8 space-y-2 overflow-y-auto custom-scrollbar">
                         {navItems.map((item) => {
                             const isActive = router.pathname === item.href;
                             const Icon = item.icon;
@@ -85,13 +85,16 @@ export default function Layout({ children }) {
                                     key={item.href}
                                     href={item.href}
                                     className={`
-                    flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors
+                    group flex items-center gap-3 px-5 py-3.5 rounded-xl text-sm font-medium transition-all duration-200
                     ${isActive
-                                            ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-900/20'
-                                            : 'text-slate-400 hover:text-white hover:bg-slate-800'}
+                                            ? 'bg-brand-500/20 text-white border border-brand-500/30 shadow-lg shadow-brand-500/10 backdrop-blur-md relative overflow-hidden'
+                                            : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'}
                   `}
                                 >
-                                    <Icon size={20} />
+                                    {isActive && (
+                                        <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-400 rounded-r-full" />
+                                    )}
+                                    <Icon size={20} className={`transition-transform duration-200 ${isActive ? 'scale-110 text-brand-300' : 'group-hover:scale-110'}`} />
                                     {item.label}
                                 </Link>
                             );
@@ -99,14 +102,14 @@ export default function Layout({ children }) {
                     </nav>
 
                     {/* User Profile / Logout */}
-                    <div className="p-4 border-t border-slate-800">
-                        <div className="flex items-center gap-3 px-4 py-3 rounded-lg bg-slate-800/50 mb-2">
-                            <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-sm font-bold">
+                    <div className="p-4 border-t border-white/10 flex-shrink-0 bg-black/20 backdrop-blur-md">
+                        <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5 border border-white/5 mb-3 hover:bg-white/10 transition-colors cursor-pointer group">
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-500 to-indigo-600 flex items-center justify-center text-sm font-bold shadow-lg ring-2 ring-white/10 group-hover:ring-brand-400/50 transition-all">
                                 {user.name ? user.name[0].toUpperCase() : 'U'}
                             </div>
                             <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{user.name || 'User'}</p>
-                                <p className="text-xs text-slate-400 truncate">{user.email}</p>
+                                <p className="text-sm font-semibold text-white truncate">{user.name || 'User'}</p>
+                                <p className="text-xs text-slate-400 truncate group-hover:text-brand-200 transition-colors">{user.email}</p>
                             </div>
                         </div>
                         <button
@@ -114,7 +117,7 @@ export default function Layout({ children }) {
                                 localStorage.clear();
                                 window.location.href = '/login';
                             }}
-                            className="w-full flex items-center gap-3 px-4 py-2 text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-lg transition-colors"
+                            className="w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-300 hover:text-red-200 hover:bg-red-500/10 rounded-lg transition-all border border-transparent hover:border-red-500/20"
                         >
                             <LogOut size={18} />
                             Sign Out
